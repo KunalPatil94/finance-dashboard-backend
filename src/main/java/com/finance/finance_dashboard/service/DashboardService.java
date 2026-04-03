@@ -1,0 +1,31 @@
+package com.finance.finance_dashboard.service;
+
+import com.finance.finance_dashboard.repo.FinancialRecordRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@Service
+public class DashboardService {
+
+    private final FinancialRecordRepository recordRepository;
+
+    public DashboardService(FinancialRecordRepository recordRepository) {
+        this.recordRepository = recordRepository;
+    }
+
+    public Map<String, Double> getSummary() {
+
+        Double income = recordRepository.getTotalIncome();
+        Double expense = recordRepository.getTotalExpense();
+
+        Map<String, Double> result = new HashMap<>();
+
+        result.put("totalIncome", income == null ? 0 : income);
+        result.put("totalExpense", expense == null ? 0 : expense);
+        result.put("netBalance", (income == null ? 0 : income) - (expense == null ? 0 : expense));
+
+        return result;
+    }
+}
