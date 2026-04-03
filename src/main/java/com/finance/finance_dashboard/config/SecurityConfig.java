@@ -19,19 +19,25 @@ public class SecurityConfig {
 		this.jwtFilter = jwtFilter;
 	}
 	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-		http.csrf(csrf -> {
-			try {
-				csrf.disable().authorizeHttpRequests(auth -> auth.requestMatchers("/auth/**","/swagger-ui/**",
-                        "/v3/api-docs/**").permitAll().anyRequest()
-	                    .authenticated()).addFilterBefore(jwtFilter,
-	                            UsernamePasswordAuthenticationFilter.class);;
-			} catch (Exception e) {
-				
-				e.printStackTrace();
-			}
-		});
-		return http.build();
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+	    http.csrf(csrf -> {
+	        try {
+	            csrf.disable().authorizeHttpRequests(auth -> auth
+	                .requestMatchers(
+	                    "/auth/**",
+	                    "/swagger-ui/**",
+	                    "/swagger-ui.html",
+	                    "/v3/api-docs",
+	                    "/v3/api-docs/**"
+	                ).permitAll()
+	                .anyRequest().authenticated()
+	            ).addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    });
+	    return http.build();
+	
 	}
 
 }
