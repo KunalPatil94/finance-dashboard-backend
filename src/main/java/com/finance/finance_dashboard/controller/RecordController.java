@@ -28,7 +28,7 @@ public class RecordController {
 
     // CREATE RECORD
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN','ANALYST')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','ANALYST')")
     public FinancialRecord createRecord(
             @Valid @RequestBody RecordRequest request,
             Authentication authentication) {
@@ -39,7 +39,7 @@ public class RecordController {
 
     // GET ALL RECORDS WITH PAGINATION
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN','ANALYST','VIEWER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','ANALYST','VIEWER')")
     public Page<FinancialRecord> getRecords(
             @RequestParam int page,
             @RequestParam int size) {
@@ -49,7 +49,7 @@ public class RecordController {
 
     // GET RECORDS BY TYPE
     @GetMapping("/type")
-    @PreAuthorize("hasAnyRole('ADMIN','ANALYST','VIEWER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','ANALYST','VIEWER')")
     public List<FinancialRecord> getByType(
             @RequestParam RecordType type) {
 
@@ -58,21 +58,21 @@ public class RecordController {
 
     // GET SINGLE RECORD
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN','ANALYST','VIEWER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','ANALYST','VIEWER')")
     public FinancialRecord getRecord(@PathVariable Long id) {
         return recordService.getRecord(id);
     }
 
     // DELETE RECORD (ADMIN ONLY)
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteRecord(@PathVariable Long id) {
         recordService.deleteRecord(id);
     }
 
     // FILTER RECORDS
     @GetMapping("/filter")
-    @PreAuthorize("hasAnyRole('ADMIN','ANALYST','VIEWER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','ANALYST','VIEWER')")
     public Page<FinancialRecord> filterRecords(
             @RequestParam(required = false) RecordType type,
             @RequestParam(required = false) String category,
