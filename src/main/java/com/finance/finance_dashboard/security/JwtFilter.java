@@ -1,4 +1,4 @@
-﻿package com.finance.finance_dashboard.security;
+package com.finance.finance_dashboard.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
