@@ -2,7 +2,6 @@ package com.finance.finance_dashboard.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -12,25 +11,23 @@ import java.util.Date;
 @Service
 public class JwtService {
 
-	@Value("${jwt.secret}")
-	private String secret;
+    @Value("${jwt.secret}")
+    private String secret;
 
-    private Key getSignKey(){
+    private Key getSignKey() {
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    public String generateToken(String email){
-
+    public String generateToken(String email) {
         return Jwts.builder()
                 .setSubject(email)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis()+86400000))
-                .signWith(SignatureAlgorithm.HS256,secret)
+                .setExpiration(new Date(System.currentTimeMillis() + 86400000))
+                .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public String extractEmail(String token){
-
+    public String extractEmail(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getSignKey())
                 .build()
@@ -39,17 +36,14 @@ public class JwtService {
                 .getSubject();
     }
 
-    public boolean validateToken(String token){
-
-        try{
+    public boolean validateToken(String token) {
+        try {
             Jwts.parserBuilder()
                     .setSigningKey(getSignKey())
                     .build()
                     .parseClaimsJws(token);
-
             return true;
-
-        }catch(Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
