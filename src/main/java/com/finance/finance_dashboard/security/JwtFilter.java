@@ -1,4 +1,4 @@
-package com.finance.finance_dashboard.security;
+﻿package com.finance.finance_dashboard.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -54,7 +54,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
                     UsernamePasswordAuthenticationToken auth =
                             new UsernamePasswordAuthenticationToken(
-                                    email,   // ← principal must be email, not user object
+                                    email,
                                     null,
                                     List.of(new SimpleGrantedAuthority(user.getRole().name()))
                             );
