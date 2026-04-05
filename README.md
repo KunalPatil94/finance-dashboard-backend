@@ -16,6 +16,11 @@ Swagger API Documentation
 
 https://resourceful-youthfulness-production-8c81.up.railway.app/swagger-ui/index.html
 
+📄 Project Documentation
+
+Detailed project documentation is available here:
+👉 https://github.com/KunalPatil94/finance-dashboard-backend/blob/main/docs/Finance_Dashboard_Documentation.pdf
+
 
 📌 Features
 
