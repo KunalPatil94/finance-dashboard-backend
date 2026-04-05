@@ -2,6 +2,8 @@ package com.finance.finance_dashboard.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
@@ -10,11 +12,11 @@ import java.util.Date;
 @Service
 public class JwtService {
 
-    private static final String SECRET =
-            "mysecretkeymysecretkeymysecretkey123456";
+	@Value("${jwt.secret}")
+	private String secret;
 
     private Key getSignKey(){
-        return Keys.hmacShaKeyFor(SECRET.getBytes());
+        return Keys.hmacShaKeyFor(secret.getBytes());
     }
 
     public String generateToken(String email){
@@ -23,7 +25,7 @@ public class JwtService {
                 .setSubject(email)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis()+86400000))
-                .signWith(getSignKey(), SignatureAlgorithm.HS256)
+                .signWith(SignatureAlgorithm.HS256,secret)
                 .compact();
     }
 

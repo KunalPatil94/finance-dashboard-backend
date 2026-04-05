@@ -15,10 +15,10 @@ import org.springframework.data.jpa.repository.Query;
 public interface FinancialRecordRepository extends JpaRepository<FinancialRecord, Long> {
 
     // Dashboard totals
-    @Query("SELECT COALESCE(SUM(f.amount),0) FROM FinancialRecord f WHERE f.type='INCOME' AND f.deleted=false")
+    @Query("SELECT COALESCE(SUM(f.amount),0) FROM FinancialRecord f WHERE f.type=com.finance.finance_dashboard.model.RecordType.INCOME AND f.deleted=false")
     Double getTotalIncome();
 
-    @Query("SELECT COALESCE(SUM(f.amount),0) FROM FinancialRecord f WHERE f.type='EXPENSE' AND f.deleted=false")
+    @Query("SELECT COALESCE(SUM(f.amount),0) FROM FinancialRecord f WHERE f.type=com.finance.finance_dashboard.model.RecordType.EXPENSE AND f.deleted=false")
     Double getTotalExpense();
 
     // Filtering (soft delete aware)
@@ -55,13 +55,14 @@ public interface FinancialRecordRepository extends JpaRepository<FinancialRecord
 
     // Monthly trend
     @Query("""
-           SELECT FUNCTION('DATE_FORMAT', f.createdAt, '%Y-%m') as month,
-                  SUM(CASE WHEN f.type='INCOME' THEN f.amount ELSE 0 END),
-                  SUM(CASE WHEN f.type='EXPENSE' THEN f.amount ELSE 0 END)
-           FROM FinancialRecord f
-           WHERE f.deleted=false
-           GROUP BY month
-           ORDER BY month
-           """)
+    	       SELECT FUNCTION('DATE_FORMAT', f.createdAt, '%Y-%m'),
+    	              SUM(CASE WHEN f.type = com.finance.finance_dashboard.model.RecordType.INCOME THEN f.amount ELSE 0 END),
+    	              SUM(CASE WHEN f.type = com.finance.finance_dashboard.model.RecordType.EXPENSE THEN f.amount ELSE 0 END)
+    	       FROM FinancialRecord f
+    	       WHERE f.deleted=false
+    	       GROUP BY FUNCTION('DATE_FORMAT', f.createdAt, '%Y-%m')
+    	       ORDER BY FUNCTION('DATE_FORMAT', f.createdAt, '%Y-%m')
+    	       """)
+    	
     List<Object[]> getMonthlySummary();
 }
