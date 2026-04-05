@@ -19,7 +19,7 @@ public class DashboardController {
         this.dashboardService = dashboardService;
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','ANALYST','VIEWER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','ANALYST','VIEWER')")
     @GetMapping("/summary")
     public Map<String, Double> getSummary() {
         return dashboardService.getSummary();
