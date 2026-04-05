@@ -13,29 +13,29 @@ import com.finance.finance_dashboard.security.JwtFilter;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-	private final JwtFilter jwtFilter;
+    private final JwtFilter jwtFilter;
 
-	public SecurityConfig(JwtFilter jwtFilter) {
-		this.jwtFilter = jwtFilter;
-	}
+    public SecurityConfig(JwtFilter jwtFilter) {
+        this.jwtFilter = jwtFilter;
+    }
 
-	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.csrf(csrf -> {
-			try {
-				csrf.disable()
-						.authorizeHttpRequests(
-								auth -> auth
-										.requestMatchers("/auth/**", "/swagger-ui/**", "/swagger-ui.html",
-												"/v3/api-docs", "/v3/api-docs/**")
-										.permitAll().anyRequest().authenticated())
-						.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		});
-		return http.build();
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-	}
+        http
+            .cors(cors -> {})   // ✅ ENABLE CORS
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(auth -> auth
+                    .requestMatchers(
+                            "/auth/**",
+                            "/swagger-ui/**",
+                            "/swagger-ui.html",
+                            "/v3/api-docs/**"
+                    ).permitAll()
+                    .anyRequest().authenticated()
+            )
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
+        return http.build();
+    }
 }
