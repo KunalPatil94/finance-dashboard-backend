@@ -8,10 +8,12 @@ import com.finance.finance_dashboard.service.RecordService;
 import jakarta.validation.Valid;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -62,5 +64,16 @@ public class RecordController {
     @DeleteMapping("/{id}")
     public void deleteRecord(@PathVariable Long id) {
         recordService.deleteRecord(id);
+    }
+    
+    @GetMapping("/filter")
+    public Page<FinancialRecord> filterRecords(
+            @RequestParam(required = false) RecordType type,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) LocalDate startDate,
+            @RequestParam(required = false) LocalDate endDate,
+            Pageable pageable) {
+
+        return recordService.filterRecords(type, category, startDate, endDate, pageable);
     }
 }

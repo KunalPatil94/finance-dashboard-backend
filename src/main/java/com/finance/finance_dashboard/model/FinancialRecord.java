@@ -1,14 +1,20 @@
 package com.finance.finance_dashboard.model;
 
+import java.time.LocalDateTime;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
+@Where(clause = "deleted=false")
 @Table(name="financial_records")
 @Getter
 @Setter
@@ -30,12 +36,21 @@ private String category;
 
 private LocalDate date;
 
-private String notes;
+private String description;
 
 @ManyToOne
 @JoinColumn(name="created_by")
 private User createdBy;
 
-private LocalDateTime createdAt = LocalDateTime.now();
+@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+@CreationTimestamp
+private LocalDateTime createdAt;
+
+@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+@UpdateTimestamp
+private LocalDateTime updatedAt;
+
+@Column(name = "is_deleted")
+private boolean deleted = false;
 
 }

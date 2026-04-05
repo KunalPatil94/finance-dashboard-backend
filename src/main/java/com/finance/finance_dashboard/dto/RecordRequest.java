@@ -20,5 +20,6 @@ public class RecordRequest {
 
     private LocalDate date;
 
-    private String notes;
+    private String description;
+
 }

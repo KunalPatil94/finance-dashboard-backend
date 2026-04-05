@@ -7,6 +7,8 @@ import com.finance.finance_dashboard.model.User;
 import com.finance.finance_dashboard.repo.UserRepository;
 import com.finance.finance_dashboard.security.JwtService;
 
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,7 +25,7 @@ public class AuthController {
 	}
 
 	@PostMapping("/register")
-	public User register(@RequestBody RegisterRequest request) {
+	public User register(@Valid@RequestBody RegisterRequest request) {
 
 		User user = User.builder().name(request.getName()).email(request.getEmail()).password(request.getPassword())
 				.role(request.getRole()).build();
