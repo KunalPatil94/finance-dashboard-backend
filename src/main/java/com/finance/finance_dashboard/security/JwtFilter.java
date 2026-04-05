@@ -4,16 +4,13 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.stereotype.Component;
-
 import com.finance.finance_dashboard.model.User;
 import com.finance.finance_dashboard.repo.UserRepository;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -39,13 +36,10 @@ public class JwtFilter extends OncePerRequestFilter {
         String header = request.getHeader("Authorization");
 
         if (header != null && header.startsWith("Bearer ")) {
-
             String token = header.substring(7);
 
             if (jwtService.validateToken(token)) {
-
                 String email = jwtService.extractEmail(token);
-
                 Optional<User> userOpt = userRepository.findByEmail(email);
 
                 if (userOpt.isPresent() &&
@@ -53,9 +47,14 @@ public class JwtFilter extends OncePerRequestFilter {
 
                     User user = userOpt.get();
 
+                    if (user.getRole() == null) {
+                        filterChain.doFilter(request, response);
+                        return;
+                    }
+
                     UsernamePasswordAuthenticationToken auth =
                             new UsernamePasswordAuthenticationToken(
-                                    user,
+                                    email,   // ← principal must be email, not user object
                                     null,
                                     List.of(new SimpleGrantedAuthority(user.getRole().name()))
                             );
