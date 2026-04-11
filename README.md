@@ -6,13 +6,20 @@ This project demonstrates backend architecture used in real-world enterprise app
 
 🚀 Live API
 
-Production API
+API Base URL
 
 https://resourceful-youthfulness-production-8c81.up.railway.app
 
-Swagger Documentation
+*( Direct access to root may return 403 because authentication is required. )*
+
+Swagger API Documentation 
 
 https://resourceful-youthfulness-production-8c81.up.railway.app/swagger-ui/index.html
+
+📄 Project Documentation
+
+Detailed project documentation is available here:
+👉 https://github.com/KunalPatil94/finance-dashboard-backend/blob/main/docs/Finance_Dashboard_Documentation.pdf
 
 
 📌 Features
