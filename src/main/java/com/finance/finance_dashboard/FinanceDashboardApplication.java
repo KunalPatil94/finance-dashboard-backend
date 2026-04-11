@@ -8,7 +8,7 @@ public class FinanceDashboardApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(FinanceDashboardApplication.class, args);
-		System.err.print("App Running well. Good !");
+		System.out.println("App Running well. Good !");
 	}
 
 }
